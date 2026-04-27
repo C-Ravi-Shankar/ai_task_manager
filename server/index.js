@@ -22,12 +22,19 @@ mongoose.connect(process.env.MONGO_URL)
   .catch(err => console.log(err));
 
 app.post("/tasks", async (req, res) => {
-  const task = await Task.create(req.body);
+  const { title, completed, userId } = req.body;
+
+  const task = await Task.create({
+    title,
+    completed,
+    userId
+  });
+
   res.json(task);
 });
 
-app.get("/tasks", async (req, res) => {
-  const tasks = await Task.find();
+app.get("/tasks/:userId", async (req, res) => {
+  const tasks = await Task.find({ userId: req.params.userId });
   res.json(tasks);
 });
 

@@ -20,11 +20,10 @@ function App() {
 
   // 🔥 Track user session (IMPORTANT)
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
+  if (user) {
+    fetchTasks();
+  }
+  }, [user]);
 
   // 🔐 Signup
   const signup = async () => {
@@ -58,20 +57,28 @@ function App() {
 
   // 📥 Fetch tasks
   const fetchTasks = async () => {
-    const res = await axios.get("https://ai-task-manager-1boz.onrender.com/tasks");
-    setTasks(res.data);
+  if (!user) return;   // ✅ safety check
+
+  const res = await axios.get(
+    `https://ai-task-manager-1boz.onrender.com/tasks/${user.uid}`
+  );
+
+  setTasks(res.data);
   };
 
   // ➕ Add task
   const addTask = async () => {
-    if (!title) return;
-    await axios.post("https://ai-task-manager-1boz.onrender.com/tasks", {
-      title,
-      completed: false,
-    });
-    setTitle("");
-    fetchTasks();
-  };
+  if (!title) return;
+
+  await axios.post("https://ai-task-manager-1boz.onrender.com/tasks", {
+    title,
+    completed: false,
+    userId: user.uid   // ✅ IMPORTANT
+  });
+
+  setTitle("");
+  fetchTasks();
+};
 
   // ❌ Delete task
   const deleteTask = async (id) => {
