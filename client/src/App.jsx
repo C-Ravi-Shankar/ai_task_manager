@@ -58,14 +58,14 @@ function App() {
 
   // 📥 Fetch tasks
   const fetchTasks = async () => {
-    const res = await axios.get("http://localhost:5000/tasks");
+    const res = await axios.get("https://ai-task-manager-1boz.onrender.com/tasks");
     setTasks(res.data);
   };
 
   // ➕ Add task
   const addTask = async () => {
     if (!title) return;
-    await axios.post("http://localhost:5000/tasks", {
+    await axios.post("https://ai-task-manager-1boz.onrender.com/tasks", {
       title,
       completed: false,
     });
@@ -75,7 +75,7 @@ function App() {
 
   // ❌ Delete task
   const deleteTask = async (id) => {
-    await axios.delete(`http://localhost:5000/tasks/${id}`);
+    await axios.delete(`https://ai-task-manager-1boz.onrender.com/tasks/${id}`);
     fetchTasks();
   };
 

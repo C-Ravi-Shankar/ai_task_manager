@@ -17,7 +17,7 @@ app.listen(5000, () => {
   console.log("Server running on port 5000");
 });
 
-mongoose.connect("mongodb+srv://ravishankar:vibecoderravi@cluster0.55qprpy.mongodb.net/?appName=Cluster0")
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("DB Connected"))
   .catch(err => console.log(err));
 
